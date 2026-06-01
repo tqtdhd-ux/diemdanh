@@ -1,25 +1,24 @@
-# Demo diem danh cho 1 lop
+# Demo diem danh nhieu thiet bi
 
-Prototype web responsive cho lop mau `DLS-K01`. Demo co:
+Website tinh dua len GitHub Pages, ket noi Supabase qua REST API.
 
-- danh sach 10 sinh vien mau;
-- giang vien mo va dong phien diem danh;
-- QR demo doi moi 30 giay;
-- nut mo giao dien sinh vien trong tab rieng;
-- mo phong quet QR va chon tai khoan mau;
-- bang theo doi cap nhat tu dong;
-- xuat file CSV mo truc tiep bang Excel.
+## Tep can dua len GitHub
 
-## Mo truc tiep khong can localhost
+- `index.html`
+- `supabase-config.js`
+- `README.md`
 
-Nhan dup vao file `index.html` ngay trong thu muc `DiemDanh`.
+Khong dua `supabase-schema.sql` len repository sau khi dien PIN rieng.
 
-Ban HTML doc lap luu du lieu vao `localStorage` cua trinh duyet. Nut `Mo tab Sinh vien` va `Mo phong quet QR dang hien thi` duoc dung de trinh dien luong diem danh ngay tren mot may tinh ma khong can server.
+## Cau hinh
 
-## Gioi han cua prototype
+Xem huong dan chi tiet trong file `HUONG-DAN-SUPABASE.md`.
 
-- Du lieu chi nam trong trinh duyet dang mo file.
-- QR chi dung de mo phong giao dien, khong phai QR check-in tren dien thoai that.
-- Chua co dang nhap Microsoft 365; sinh vien chon tai khoan mau.
-- Chua co Teams Tab, LMS, GPS, Wi-Fi validation hoac audit log.
-- File xuat la CSV UTF-8 tuong thich Excel, phu hop de chot mau bao cao truoc khi lam `.xlsx`.
+## Luu y
+
+- Chi dung du lieu mau trong giai doan pilot.
+- `publishable key` co the nam trong website tinh.
+- Tuyet doi khong dua `secret key`, legacy `service_role key` hoac mat khau database len GitHub.
+- PIN giang vien khong nam trong JavaScript. SQL chi luu ban bam cua PIN.
+- QR co hieu luc toi da 15 phut va het hieu luc khi giang vien dong phien.
+- Ban pilot chua co dang nhap Microsoft 365. Khong dung cho diem danh chinh thuc.

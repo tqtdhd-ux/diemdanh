@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Điểm danh DLS-K01</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="./supabase-config.js"></script>
   <style>
     :root{--navy:#0b2342;--blue:#174e7d;--gold:#f2b234;--paper:#f4f7fb;--ink:#17263b;--muted:#6d7b8e;--line:#dbe4ee;--green:#13795b;--red:#b42318;--white:#fff;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink)}
     *{box-sizing:border-box}body{margin:0;background:var(--paper)}button,input,select{font:inherit}button{border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}
@@ -13,12 +15,12 @@
     .card{border:1px solid var(--line);border-radius:16px;background:white;box-shadow:0 5px 20px #162c470f}.course{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;padding:20px}.course p:last-child{margin-top:7px;color:var(--muted)}
     .badge,.status{display:inline-block;border-radius:999px;padding:6px 10px;color:var(--green);background:#eaf8f2;font-size:12px;font-weight:800}.badge{padding:8px 13px;color:white;background:var(--green)}.closed{color:white;background:var(--red)}.status.absent{color:var(--red);background:#fff0ee}
     .grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1.35fr);gap:18px}.panel{padding:20px}.heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.countdown{border-radius:8px;padding:7px 10px;color:var(--navy);background:#eef4fa;font-weight:800}
-    .qr-shell{display:grid;min-height:246px;margin:18px 0 9px;place-items:center;border:1px dashed #afbecd;border-radius:13px;background:#f9fbfd}.qr-wrap{text-align:center}.qr-wrap canvas{display:block;margin:auto;padding:8px;background:white}.qr-token{margin-top:8px;color:var(--muted);font-family:Consolas,monospace;font-size:12px}.muted{color:var(--muted);font-size:13px;line-height:1.55}.center{text-align:center}
+    .qr-shell{display:grid;min-height:246px;margin:18px 0 9px;place-items:center;border:1px dashed #afbecd;border-radius:13px;background:#f9fbfd}.qr-wrap{text-align:center}.qr-wrap img{display:block;margin:auto;padding:8px;background:white}.qr-link{display:block;max-width:300px;margin-top:8px;overflow-wrap:anywhere;color:var(--blue);font-size:12px}.muted{color:var(--muted);font-size:13px;line-height:1.55}.center{text-align:center}
     .row{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.primary{color:white;background:var(--navy)}.secondary{color:var(--navy);background:#e9f0f7}.danger{color:var(--red);background:#fff0ee}.wide{width:100%;margin-top:14px;padding:13px}
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:23px}.stat{display:flex;flex-direction:column;padding:15px;border-radius:12px;background:#f4f7fb}.stat strong{color:var(--navy);font-size:30px}.stat span{margin-top:4px;color:var(--muted);font-size:12px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:18px}.stat{display:flex;flex-direction:column;padding:15px;border-radius:12px;background:#f4f7fb}.stat strong{color:var(--navy);font-size:30px}.stat span{margin-top:4px;color:var(--muted);font-size:12px}
     .roster{margin-top:18px}input,select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px 12px;color:var(--ink);background:white}#search{max-width:250px}.table-wrap{overflow-x:auto;margin-top:15px}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:13px 10px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:11px;letter-spacing:.6px;text-transform:uppercase}
-    .student-card{max-width:520px;margin:36px auto;padding:20px}.student-card label{display:block;margin:20px 0 7px;font-weight:700}.notice{margin-top:16px;border-radius:10px;padding:12px;color:var(--navy);background:#edf4fb;font-size:14px;line-height:1.45}.notice.success{color:var(--green);background:#eaf8f2}.notice.error{color:var(--red);background:#fff0ee}.hidden{display:none!important}footer{padding:18px;color:var(--muted);text-align:center;font-size:12px}
-    @media(max-width:760px){header{align-items:stretch;flex-direction:column}.tabs{align-self:stretch}.tab{flex:1}.grid{grid-template-columns:1fr}.course,.heading{align-items:flex-start;flex-direction:column}#search{max-width:none}}
+    .teacher-login{display:flex;gap:9px;margin-top:16px}.teacher-login input{max-width:210px}.student-card{max-width:520px;margin:36px auto;padding:20px}.student-card label{display:block;margin:20px 0 7px;font-weight:700}.notice{margin-top:16px;border-radius:10px;padding:12px;color:var(--navy);background:#edf4fb;font-size:14px;line-height:1.45}.notice.success{color:var(--green);background:#eaf8f2}.notice.error{color:var(--red);background:#fff0ee}.hidden{display:none!important}footer{padding:18px;color:var(--muted);text-align:center;font-size:12px}
+    @media(max-width:760px){header{align-items:stretch;flex-direction:column}.tabs{align-self:stretch}.tab{flex:1}.grid{grid-template-columns:1fr}.course,.heading{align-items:flex-start;flex-direction:column}#search{max-width:none}.teacher-login{flex-direction:column}.teacher-login input{max-width:none}}
   </style>
 </head>
 <body>
@@ -28,22 +30,22 @@
   </header>
   <main>
     <section class="card course">
-      <div><p class="eyebrow">HP-DLS-01</p><h2>Dược lâm sàng</h2><p>DLS-K01 · Phòng 305 · TS. Nguyễn Văn An</p></div>
+      <div><p class="eyebrow" id="course-code">DLS-K01</p><h2 id="course-name">Dược lâm sàng</h2><p id="course-details">Phòng 305 · TS. Nguyễn Văn An</p></div>
       <span id="badge" class="badge closed">Chưa mở</span>
     </section>
     <section id="teacher">
       <div class="grid">
         <article class="card panel">
-          <div class="heading"><div><p class="eyebrow">PHIÊN ĐIỂM DANH</p><h3>QR động</h3></div><span id="countdown" class="countdown">--</span></div>
-          <div class="qr-shell"><div id="qr-placeholder" class="muted">Mở phiên để tạo QR</div><div id="qr-wrap" class="qr-wrap hidden"><canvas id="qr" width="210" height="210"></canvas><p id="qr-token" class="qr-token"></p></div></div>
-          <p class="muted center">Mã demo thay đổi mỗi 30 giây.</p>
-          <div class="row"><button id="open" class="primary">Mở điểm danh</button><button id="close" class="secondary" disabled>Đóng phiên</button></div>
+          <div class="heading"><div><p class="eyebrow">PHIÊN ĐIỂM DANH</p><h3>QR check-in</h3></div><span id="countdown" class="countdown">--</span></div>
+          <div class="qr-shell"><div id="qr-placeholder" class="muted">Nhập PIN và mở phiên để tạo QR</div><div id="qr-wrap" class="qr-wrap hidden"><div id="qr"></div><a id="qr-link" class="qr-link" target="_blank"></a></div></div>
+          <p class="muted center">Sinh viên dùng camera điện thoại để quét QR. Phiên mặc định có hiệu lực 15 phút.</p>
+          <div class="teacher-login"><input id="teacher-pin" type="password" inputmode="numeric" placeholder="PIN giảng viên"><button id="open" class="primary">Mở điểm danh</button><button id="close" class="secondary" disabled>Đóng phiên</button></div>
         </article>
         <article class="card panel">
-          <div><p class="eyebrow">THEO DÕI REALTIME</p><h3>Tổng quan lớp</h3></div>
-          <div class="stats"><div class="stat"><strong id="present">0</strong><span>Có mặt</span></div><div class="stat"><strong id="absent">10</strong><span>Chưa điểm danh</span></div><div class="stat"><strong>10</strong><span>Sĩ số</span></div></div>
-          <div class="row"><button id="open-student-tab" class="primary">Mở tab Sinh viên</button><button id="export" class="secondary">Xuất Excel CSV</button><button id="reset" class="danger">Đặt lại demo</button></div>
-          <p class="muted" style="margin-top:14px">Dữ liệu được lưu trong trình duyệt bằng localStorage.</p>
+          <div><p class="eyebrow">THEO DÕI NHIỀU THIẾT BỊ</p><h3>Tổng quan lớp</h3></div>
+          <div class="stats"><div class="stat"><strong id="present">0</strong><span>Có mặt</span></div><div class="stat"><strong id="absent">0</strong><span>Chưa điểm danh</span></div><div class="stat"><strong id="total">0</strong><span>Sĩ số</span></div></div>
+          <div class="row"><button id="open-student-tab" class="primary">Mở tab Sinh viên</button><button id="export" class="secondary">Xuất Excel CSV</button><button id="refresh" class="secondary">Làm mới</button></div>
+          <p class="muted" style="margin-top:14px">Danh sách được tải lại từ Supabase mỗi 2 giây. PIN chỉ được giữ trong tab hiện tại.</p>
         </article>
       </div>
       <article class="card panel roster">
@@ -54,34 +56,33 @@
     <section id="student" class="hidden">
       <article class="card student-card">
         <p class="eyebrow">CHECK-IN TRÊN SMARTPHONE</p><h3>Điểm danh buổi học</h3>
-        <p class="muted" style="margin-top:10px">Bản HTML độc lập dùng nút mô phỏng quét QR. Bản triển khai thật sẽ xác thực tài khoản Microsoft 365.</p>
+        <p class="muted" style="margin-top:10px">Quét QR trên màn hình giảng viên, chọn tài khoản mẫu và xác nhận điểm danh.</p>
         <label for="student-select">Sinh viên</label><select id="student-select"></select>
-        <button id="scan" class="secondary wide">Mô phỏng quét QR đang hiển thị</button>
         <button id="checkin" class="primary wide">Xác nhận điểm danh</button>
-        <div id="notice" class="notice">Mở phiên điểm danh và mô phỏng quét QR để bắt đầu.</div>
+        <div id="notice" class="notice">Đang kiểm tra phiên điểm danh...</div>
       </article>
     </section>
   </main>
-  <footer>Prototype HTML độc lập cho 1 lớp · Mở trực tiếp trong trình duyệt, không cần localhost</footer>
+  <footer>Prototype nhiều thiết bị cho 1 lớp · GitHub Pages + Supabase · Chỉ dùng dữ liệu mẫu</footer>
   <script>
-    const students=[["SV001","Nguyễn Minh Anh"],["SV002","Trần Bảo Châu"],["SV003","Lê Hoàng Dũng"],["SV004","Phạm Thu Hà"],["SV005","Đỗ Quang Huy"],["SV006","Vũ Khánh Linh"],["SV007","Bùi Đức Long"],["SV008","Hoàng Mai Phương"],["SV009","Nguyễn Gia Thành"],["SV010","Trịnh Ngọc Yến"]].map(([id,name])=>({id,name}));
-    const $=id=>document.getElementById(id),key="diemdanh-demo-v1";let scannedToken="";
-    const fresh=()=>({open:false,sessionId:"",openedAt:"",checkins:[]});let state=JSON.parse(localStorage.getItem(key)||"null")||fresh();
-    const save=()=>localStorage.setItem(key,JSON.stringify(state)),slot=()=>Math.floor(Date.now()/30000);
-    function hash(text){let h=2166136261;for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(16).padStart(8,"0")}
-    const token=()=>state.open?hash(state.sessionId+"|"+slot()):"";
-    function drawQr(value){const c=$("qr"),x=c.getContext("2d"),n=25,s=c.width/n;x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);function finder(a,b){x.fillStyle="#0b2342";x.fillRect(a*s,b*s,7*s,7*s);x.fillStyle="#fff";x.fillRect((a+1)*s,(b+1)*s,5*s,5*s);x.fillStyle="#0b2342";x.fillRect((a+2)*s,(b+2)*s,3*s,3*s)}let seed=parseInt(hash(value),16);for(let r=0;r<n;r++)for(let col=0;col<n;col++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;if(seed&1){x.fillStyle="#0b2342";x.fillRect(col*s,r*s,Math.ceil(s),Math.ceil(s))}}finder(1,1);finder(17,1);finder(1,17)}
-    function render(){const t=token(),checked=new Map(state.checkins.map(c=>[c.id,c]));$("badge").textContent=state.open?"Đang mở":"Đã đóng";$("badge").className="badge"+(state.open?"":" closed");$("open").disabled=state.open;$("close").disabled=!state.open;$("present").textContent=checked.size;$("absent").textContent=students.length-checked.size;$("countdown").textContent=state.open?(30-Math.floor(Date.now()/1000)%30)+"s":"--";$("qr-placeholder").classList.toggle("hidden",state.open);$("qr-wrap").classList.toggle("hidden",!state.open);if(state.open){drawQr(t);$("qr-token").textContent="Mã: "+t}const q=$("search").value.toLowerCase();$("tbody").innerHTML=students.filter(s=>(s.id+" "+s.name).toLowerCase().includes(q)).map(s=>{const c=checked.get(s.id);return`<tr><td><strong>${s.id}</strong></td><td>${s.name}</td><td><span class="status ${c?"":"absent"}">${c?"Có mặt":"Chưa điểm danh"}</span></td><td>${c?c.time:"—"}</td></tr>`}).join("")}
-    document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));$("teacher").classList.toggle("hidden",b.dataset.view!=="teacher");$("student").classList.toggle("hidden",b.dataset.view!=="student")});
-    $("student-select").innerHTML=students.map(s=>`<option value="${s.id}">${s.id} · ${s.name}</option>`).join("");
-    $("open-student-tab").onclick=()=>window.open(location.href.split("#")[0]+"#student","_blank");
-    $("open").onclick=()=>{state={open:true,sessionId:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36),openedAt:new Date().toLocaleString("vi-VN"),checkins:[]};scannedToken="";save();render()};
-    $("close").onclick=()=>{state.open=false;save();render()};$("reset").onclick=()=>{state=fresh();scannedToken="";save();render()};
-    $("scan").onclick=()=>{const n=$("notice");if(!state.open){n.className="notice error";n.textContent="Phiên điểm danh chưa mở.";return}scannedToken=token();n.className="notice";n.textContent="Đã quét mã QR. Nhấn Xác nhận điểm danh trong vòng 30 giây."};
-    $("checkin").onclick=()=>{const n=$("notice"),id=$("student-select").value;if(!state.open){n.className="notice error";n.textContent="Phiên điểm danh đã đóng.";return}if(!scannedToken||scannedToken!==token()){n.className="notice error";n.textContent="Mã QR đã hết hạn. Vui lòng mô phỏng quét lại mã mới.";return}if(state.checkins.some(c=>c.id===id)){n.className="notice success";n.textContent="Sinh viên này đã điểm danh trước đó.";return}state.checkins.push({id,time:new Date().toLocaleString("vi-VN"),method:"QR"});save();render();n.className="notice success";n.textContent="Điểm danh thành công."};
-    $("export").onclick=()=>{const checked=new Map(state.checkins.map(c=>[c.id,c])),rows=[["STT","Mã sinh viên","Họ tên","Trạng thái","Thời gian điểm danh","Phương thức"],...students.map((s,i)=>{const c=checked.get(s.id);return[i+1,s.id,s.name,c?"Có mặt":"Vắng",c?c.time:"",c?c.method:""]})],csv="\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="diem-danh-DLS-K01.csv";a.click();URL.revokeObjectURL(a.href)};
-    function applyHashView(){if(location.hash==="#student")document.querySelector('.tab[data-view="student"]').click()}
-    $("search").oninput=render;window.addEventListener("storage",()=>{state=JSON.parse(localStorage.getItem(key)||"null")||fresh();render()});window.addEventListener("hashchange",applyHashView);setInterval(render,1000);render();applyHashView();
+    const $=id=>document.getElementById(id),config=window.APP_CONFIG||{},classCode=config.classCode||"DLS-K01";
+    const params=new URLSearchParams(location.search);let state={classInfo:{code:classCode,name:"Dược lâm sàng",room:"Phòng 305",lecturer:"TS. Nguyễn Văn An"},students:[],session:null,records:[]};
+    const teacherPin=()=>sessionStorage.getItem("teacherPin")||$("teacher-pin").value.trim(),apiKey=()=>config.supabaseKey||config.supabaseAnonKey;
+    const configured=()=>config.supabaseUrl&&apiKey()&&!config.supabaseUrl.includes("YOUR_");
+    const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+    function message(text,type=""){const n=$("notice");n.className="notice"+(type?" "+type:"");n.textContent=text}
+    async function rpc(name,body={}){if(!configured())throw new Error("Chưa cấu hình Supabase. Hãy cập nhật file supabase-config.js.");const key=apiKey(),r=await fetch(`${config.supabaseUrl}/rest/v1/rpc/${name}`,{method:"POST",headers:{apikey:key,"Content-Type":"application/json"},body:JSON.stringify(body)});const text=await r.text();if(!r.ok)throw new Error(text.includes("message")?(JSON.parse(text).message||text):text);return text?JSON.parse(text):null}
+    function showView(view){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===view));$("teacher").classList.toggle("hidden",view!=="teacher");$("student").classList.toggle("hidden",view!=="student")}
+    function checkinUrl(){return state.session?.token?`${location.href.split(/[?#]/)[0]}?session=${encodeURIComponent(state.session.id)}&token=${encodeURIComponent(state.session.token)}#student`:""}
+    function drawQr(url){const box=$("qr");box.innerHTML="";if(window.QRCode)new QRCode(box,{text:url,width:210,height:210,correctLevel:QRCode.CorrectLevel.M});else box.textContent="Không tải được thư viện QR. Dùng đường dẫn bên dưới."}
+    function render(){const records=new Map((state.records||[]).map(r=>[r.student_code,r]));$("course-code").textContent=state.classInfo.code;$("course-name").textContent=state.classInfo.name;$("course-details").textContent=`${state.classInfo.room} · ${state.classInfo.lecturer}`;const open=!!state.session?.is_open;$("badge").textContent=open?"Đang mở":"Đã đóng";$("badge").className="badge"+(open?"":" closed");$("open").disabled=open;$("close").disabled=!open;$("present").textContent=records.size;$("absent").textContent=Math.max(0,state.students.length-records.size);$("total").textContent=state.students.length;const seconds=open?Math.max(0,Math.floor((new Date(state.session.expires_at)-Date.now())/1000)):0;$("countdown").textContent=open?`${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`:"--";const url=checkinUrl();$("qr-placeholder").classList.toggle("hidden",!!url);$("qr-wrap").classList.toggle("hidden",!url);if(url&&$("qr-link").href!==url){drawQr(url);$("qr-link").href=url;$("qr-link").textContent=url}const q=$("search").value.toLowerCase();$("tbody").innerHTML=state.students.filter(s=>(s.student_code+" "+s.full_name).toLowerCase().includes(q)).map(s=>{const r=records.get(s.student_code);return`<tr><td><strong>${esc(s.student_code)}</strong></td><td>${esc(s.full_name)}</td><td><span class="status ${r?"":"absent"}">${r?"Có mặt":"Chưa điểm danh"}</span></td><td>${r?new Date(r.checked_in_at).toLocaleString("vi-VN"):"—"}</td></tr>`}).join("");$("student-select").innerHTML=state.students.map(s=>`<option value="${esc(s.student_code)}">${esc(s.student_code)} · ${esc(s.full_name)}</option>`).join("")}
+    async function refresh(){try{state=await rpc("get_class_state",{p_class_code:classCode,p_teacher_pin:teacherPin()||null});render()}catch(e){console.error(e);if(!configured())message(e.message,"error")}}
+    async function openSession(){try{const pin=$("teacher-pin").value.trim();if(!pin)throw new Error("Nhập PIN giảng viên.");state=await rpc("open_attendance",{p_class_code:classCode,p_teacher_pin:pin,p_minutes:15});sessionStorage.setItem("teacherPin",pin);render()}catch(e){alert(e.message)}}
+    async function closeSession(){try{state=await rpc("close_attendance",{p_class_code:classCode,p_teacher_pin:teacherPin()});render()}catch(e){alert(e.message)}}
+    async function checkin(){try{const session=params.get("session"),token=params.get("token");if(!session||!token)throw new Error("Hãy quét QR đang hiển thị trên màn hình giảng viên.");const result=await rpc("student_checkin",{p_session_id:session,p_student_code:$("student-select").value,p_token:token});message(result.message,"success");await refresh()}catch(e){message(e.message,"error")}}
+    function exportCsv(){const records=new Map((state.records||[]).map(r=>[r.student_code,r])),rows=[["STT","Mã sinh viên","Họ tên","Trạng thái","Thời gian điểm danh","Phương thức"],...state.students.map((s,i)=>{const r=records.get(s.student_code);return[i+1,s.student_code,s.full_name,r?"Có mặt":"Vắng",r?new Date(r.checked_in_at).toLocaleString("vi-VN"):"",r?"QR":""]})],csv="\ufeff"+rows.map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download=`diem-danh-${classCode}.csv`;a.click();URL.revokeObjectURL(a.href)}
+    document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showView(b.dataset.view));$("open").onclick=openSession;$("close").onclick=closeSession;$("checkin").onclick=checkin;$("refresh").onclick=refresh;$("export").onclick=exportCsv;$("search").oninput=render;$("teacher-pin").value=sessionStorage.getItem("teacherPin")||"";$("open-student-tab").onclick=()=>{const url=checkinUrl()||`${location.href.split(/[?#]/)[0]}#student`;window.open(url,"_blank")};
+    if(location.hash==="#student"){showView("student");message(params.get("session")?"QR hợp lệ. Chọn sinh viên và xác nhận điểm danh.":"Hãy quét QR trên màn hình giảng viên.")}refresh();setInterval(refresh,2000);
   </script>
 </body>
 </html>
